@@ -320,7 +320,7 @@ function generateFigure(filename, classNames = []) {
     );
   }
   else {
-    return `<figure class="${classNames.join(' ')} nodata">No photo available</figure>`;
+    return `<figure class="${classNames.join(' ')} nodata">Belum ada foto. <a href="#kontrib" style="border:none;" class="sunting-linktambah">Tambahkan!</a></figure>`;
   }
 }
 
