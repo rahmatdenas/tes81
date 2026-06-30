@@ -283,11 +283,13 @@ if (klaster === 'Wilayah Administratif') {
   // ==========================================
   // BLOK 2: KARYA & LITERATUR
   // ==========================================
-  if (['Prasasti', 'Lontar', 'Naskah', 'Media massa', 'Publikasi', 'Latar karya sastra'].includes(klaster)) {
-    selectClause += `(GROUP_CONCAT(DISTINCT ?bhsLabel; separator=", ") AS ?bahasaList) (GROUP_CONCAT(DISTINCT ?bentukLabel; separator=", ") AS ?bentukList) (GROUP_CONCAT(DISTINCT ?penulisLabel; separator=", ") AS ?penulisList) (GROUP_CONCAT(DISTINCT ?subjekLabel; separator=", ") AS ?subjekList) `;
+if (['Prasasti', 'Lontar', 'Naskah', 'Media massa', 'Publikasi', 'Latar karya sastra', 'Lukisan'].includes(klaster)) {
+    selectClause += `(GROUP_CONCAT(DISTINCT ?bhsLabel; separator=", ") AS ?bahasaList) (GROUP_CONCAT(DISTINCT ?bentukLabel; separator=", ") AS ?bentukList) (GROUP_CONCAT(DISTINCT ?genreLabel; separator=", ") AS ?genreList) (GROUP_CONCAT(DISTINCT ?penulisLabel; separator=", ") AS ?penulisList) (GROUP_CONCAT(DISTINCT ?subjekLabel; separator=", ") AS ?subjekList) `;
     whereClause += `
       OPTIONAL { ?site wdt:P407 ?bhsItem . ?bhsItem rdfs:label ?bhsLabel . FILTER(LANG(?bhsLabel) = "id") }
       OPTIONAL { ?site wdt:P7937 ?bentukItem . ?bentukItem rdfs:label ?bentukLabel . FILTER(LANG(?bentukLabel) = "id") }
+      # Genre (P136)
+      OPTIONAL { ?site wdt:P136 ?genreItem . ?genreItem rdfs:label ?genreLabel . FILTER(LANG(?genreLabel) = "id") }
       OPTIONAL { ?site wdt:P50 ?penulisItem . ?penulisItem rdfs:label ?penulisLabel . FILTER(LANG(?penulisLabel) = "id") }
       OPTIONAL { ?site wdt:P921 ?subjekItem . ?subjekItem rdfs:label ?subjekLabel . FILTER(LANG(?subjekLabel) = "id") }
     `;
@@ -393,8 +395,8 @@ if (['Prasasti', 'Situs arkeologi', 'Artefak', 'Lontar', 'Naskah', 'Lukisan'].in
       }
     `;
   }
-  else if (klaster === 'Tokoh') {
-    selectClause += `(SAMPLE(?wafatData) AS ?tglWafat) (GROUP_CONCAT(DISTINCT ?kerjaLabel; separator=", ") AS ?pekerjaanList) (GROUP_CONCAT(DISTINCT ?ahliLabel; separator=", ") AS ?spesialisasiList) `;
+else if (klaster === 'Tokoh') {
+    selectClause += `(SAMPLE(?wafatData) AS ?tglWafat) (GROUP_CONCAT(DISTINCT ?kerjaLabel; separator=", ") AS ?pekerjaanList) (GROUP_CONCAT(DISTINCT ?ahliLabel; separator=", ") AS ?spesialisasiList) (GROUP_CONCAT(DISTINCT ?koleksiKaryaLabel; separator=", ") AS ?koleksiKaryaList) `;
     whereClause += `
       OPTIONAL {
         ?site p:P570 ?wafatStmt .
@@ -405,6 +407,9 @@ if (['Prasasti', 'Situs arkeologi', 'Artefak', 'Lontar', 'Naskah', 'Lukisan'].in
       }
       OPTIONAL { ?site wdt:P106 ?kerjaItem . ?kerjaItem rdfs:label ?kerjaLabel . FILTER(LANG(?kerjaLabel) = "id") }
       OPTIONAL { ?site wdt:P101 ?ahliItem . ?ahliItem rdfs:label ?ahliLabel . FILTER(LANG(?ahliLabel) = "id") }
+      
+      # Memiliki karya yang disimpan dalam koleksi (P6379)
+      OPTIONAL { ?site wdt:P6379 ?koleksiKaryaItem . ?koleksiKaryaItem rdfs:label ?koleksiKaryaLabel . FILTER(LANG(?koleksiKaryaLabel) = "id") }
     `;
   }
   else if (klaster === 'Gunung') {
