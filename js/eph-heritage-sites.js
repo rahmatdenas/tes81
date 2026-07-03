@@ -262,7 +262,7 @@ function populateProvinceTypesData() {
   // Jika pengguna memilih mode "Apapun", ganti template dasarnya!
   if (inputTxt.toLowerCase() === 'apapun') {
     baseQuery = KUMPULAN_KUERI_0['apapun'];
-    currentNamaKlaster = 'Berbagai Objek'; // Nama kosmetik untuk UI
+    currentNamaKlaster = 'Objek'; // Nama kosmetik untuk UI
   }
 
   let propLokasi = dapatkanPropertiWikidata(currentNamaKlaster);
