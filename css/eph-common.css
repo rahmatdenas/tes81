@@ -133,6 +133,12 @@ nav li.active a, nav li a.active {
   color: #fff !important;
 }
 
+/* Mengunci warna tombol navigasi agar tidak kembali ke hitam bawaan browser */
+#nav-detail a, 
+#nav-detail a:not([href]) {
+  color: #bf9090; 
+}
+
 /* ==========================================================================
    4. KONTEN PANEL UMUM
    ========================================================================== */
