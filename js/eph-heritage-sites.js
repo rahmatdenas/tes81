@@ -1362,16 +1362,19 @@ function queryOsm(qid) {
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (xhr.readyState !== xhr.DONE) return;
- if (xhr.status === 200) {
+    
+    if (xhr.status === 200) {
       let geoJson = osmtogeojson(JSON.parse(xhr.responseText));
       if (!geoJson || geoJson.features.length === 0) return;
+      
       let shapeLayer = L.geoJSON(
         geoJson,
         {
           style: { color: '#ff3333', opacity: 0.7, fill: true },
           filter: feature => feature.geometry.type !== 'Point',
-        },
+        }
       );
+      
       Records[qid].shapeLayer = shapeLayer;
 
       // KUNCI PERBAIKAN: Pastikan halaman belum pindah sebelum menggambar
@@ -1381,16 +1384,12 @@ function queryOsm(qid) {
         currentActiveShapeLayer = shapeLayer;
         Map.fitBounds(shapeLayer.getBounds());
       }
-      shapeLayer.addTo(Map);
-
-      if (window.location.hash.replace('#', '') === qid) {
-        Map.fitBounds(shapeLayer.getBounds());
-      }
     }
     else {
       console.log('ERROR loading from Overpass API', xhr);
     }
   };
+  
   xhr.open(
     'GET',
     'https://overpass-api.de/api/interpreter?data=' +
